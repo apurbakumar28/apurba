@@ -1,0 +1,96 @@
+package com.pivot;
+import java.sql.Connection;
+
+import java.sql.DriverManager;
+
+import java.sql.ResultSet;
+
+import java.sql.SQLException;
+
+import java.sql.Statement;
+
+import java.util.ArrayList;
+
+import java.util.List;
+
+public class TablePivot {
+	public static void main(String args[]) throws SQLException {
+
+		String sourceTable = args[0];
+
+		String keyColumn = args[1]; //name
+
+		String pivotColumn = args[2]; //state
+
+		String valueColumn = args[3]; //vehicle
+
+		String targetTable = args[4];
+
+				String url = "jdbc:msql://11.11.11.11:3306/test";
+
+        Connection conn=null;
+
+        Statement stmt;
+
+        ResultSet rs;
+
+        List<String> targetColumns = new ArrayList<String>();
+
+        String sql = "select "+pivotColumn+" from "+sourceTable;
+
+        String targetTableDdl = "create table "+targetTable+" ("+keyColumn+" varchar(100))";
+
+        String targetTableDdlAlter;
+
+        		try {
+
+			conn = DriverManager.getConnection(url,"","");
+
+			stmt = conn.createStatement();
+
+			stmt.execute("insert into "+targetTable+" select "+keyColumn+" from "+sourceTable);
+
+	        	rs = stmt.executeQuery(sql);
+       	
+
+	        	while (rs.next()) {
+
+	        		targetColumns.add(rs.getString(0));
+
+	        	}
+        	
+
+	        	stmt.execute(targetTableDdl);
+
+	        	for (String targetColumn : targetColumns) {
+
+	        		targetTableDdlAlter = "alter table "+targetTable+" add "+targetColumn +" varchar(100))";
+
+	        		stmt.execute(targetTableDdlAlter);
+
+	        		//The following needs to be tested ... pretty sure this is wrong
+
+	        		stmt.execute("update "+targetTable+"set "+targetColumn+" = select "+valueColumn+" from "+sourceTable+" where "+sourceTable+"."+keyColumn+" = "+targetTable+".keyColumn");
+
+	        	}
+        	
+
+		} catch (SQLException e) {
+
+			// TODO Auto-generated catch block
+
+			e.printStackTrace();
+
+		} finally {
+
+			if (conn != null) {
+
+				conn.close();
+
+			}
+
+		}
+
+	}
+
+}
