@@ -6,11 +6,7 @@ object Lists {
 
   /**
     * This method computes the sum of all elements in the list xs. There are
-    * multiple techniques that can be used for implementing this method, and
-    * you will learn during the class.
-    *
-    * For this example assignment you can use the following methods in class
-    * `List`:
+    * 
     *
     *  - `xs.isEmpty: Boolean` returns `true` if the list `xs` is empty
     *  - `xs.head: Int` returns the head element of the list `xs`. If the list
@@ -30,7 +26,7 @@ object Lists {
   }
 
   /**
-    * This method returns the largest element in a list of integers. If the
+    * If the
     * list `xs` is empty it throws a `java.util.NoSuchElementException`.
     *
     * You can use the same methods of the class `List` as mentioned above.
