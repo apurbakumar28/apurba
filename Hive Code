@@ -1,1 +1,4 @@
-
+issue with vertex failure in hive
+Solution:
+1.make sure that external tables are created using only the parametr Stored AS ORC and not extra parametrs like INPUT FORMAT and OUTPUT FORMAT
+2.Make sure that the compression is kept as ZLIB in caps.
